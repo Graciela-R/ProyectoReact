@@ -1,13 +1,66 @@
 import React, { useState } from 'react'
-import { Button, Card, CardContent, CardMedia, Collapse, Dialog, DialogContent, IconButton, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, CardContent, CardMedia, Collapse, Dialog, DialogContent, IconButton, Typography } from '@mui/material'
 import CloseIcon from "@mui/icons-material/Close";
 import { fetchTrailerKey } from '../api'
+import { FavoriteBorder } from '@mui/icons-material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { useAuth } from './AuthContext';
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, isFavorite=true, isComunity=true}) => {
   const [open, setOpen] = useState(false)
   const [videoKey, setVideoKey] = useState(null)
+  const {user}=useAuth()
+  
+  const addFavorite = async() => {
+   
+    if(!user) return alert("Debes iniciar sesion para agragr a favoritos")
+    const userFavoriteRef=doc(db ,'favoritos',user.uid)
+    const favoriteRef=await getDoc(userFavoriteRef)
+    try{
+      if(favoriteRef.exists())
+      {
+        await updateDoc(
+          userFavoriteRef,{
+            movies:arrayUnion(
+              {
+                id:movie.id,
+                title:movie.title,
+                poster_path:movie.poster_path,
+                release_date: movie.release_date
+              }
+            )
+  
+          }
+        )
 
-  const addFavorite = () => alert('agregaste a favoritos')
+      }else{
+        await setDoc(
+          userFavoriteRef,{
+            movies:arrayUnion(
+              {
+                id:movie.id,
+                title:movie.title,
+                poster_path:movie.poster_path,
+                release_date: movie.release_date
+              }
+            )
+  
+          }
+        )
+
+      }
+      
+      alert(`${movie.title} se agrego correctamente`)
+      
+
+    }catch(e){
+      console.error("error al agregar a favoritos",e)
+    }
+
+    
+  }
 
   const handleOpen = async () => {
     const key = await fetchTrailerKey(movie.id)
@@ -52,23 +105,54 @@ const MovieCard = ({ movie }) => {
         >
           <Typography variant="body1">{movie.title}</Typography>
           <Typography variant="body2" color="text.secondary">
-            {movie.release_date} - {movie.genre} - {movie.duration}
+            {movie.release_date}
+            {console.log('llllllllll',movie)}
           </Typography>
+          {
+            isComunity?
+
+            <Box
+            sx={{
+              display:"flex",
+              justifyContent:"center"
+            }}>
 
           <Button
             variant='contained'
             onClick={handleOpen}
             
             sx={{ 
-              backgroundColor:'#6100C2'
+              backgroundColor:'#6100C2',
+              width:20,
+              borderRadius:2
             }}
-
-          >
-            WATCH VIDEO
+            
+            >
+            {/* aqui esta el icono del play */}
+            <PlayArrowIcon/>       
           </Button>
-          <IconButton onClick={addFavorite}>
-            {/* <FavoriteBorderIcon /> */}
+            {
+              isFavorite?
+              <IconButton onClick={addFavorite}
+              sx={{
+                backgroundColor:'#6100C2',
+                width:30,
+                marginLeft:2,
+                borderRadius:2
+                
+              }}
+              >
+            <FavoriteBorder/>
           </IconButton>
+              :
+              ''
+              
+            }
+          
+          </Box>
+          :
+          ''
+          }
         </CardContent>
         {/* </Collapse> */}
         {console.log('MOVIE', movie.title)}

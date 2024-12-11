@@ -1,13 +1,18 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Banner from "../assets/banner.svg";
 import { useAuth } from "./AuthContext";
 
 const DynamicNavbar = () => {
   const location = useLocation();
   const {user}=useAuth()
+   const navigate= useNavigate()
+
+   const goToSearch=()=>{
+     navigate('/search')
+   }
 
   // Cambia el estilo dinámicamente según la ruta actual
   const getBackgroundStyle = () => {
@@ -59,7 +64,7 @@ const DynamicNavbar = () => {
           display: "flex",
           alignItems: "center", 
           gap: "1rem" }}>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={goToSearch}>
             <SearchIcon />
           </IconButton>
           <IconButton color="inherit">

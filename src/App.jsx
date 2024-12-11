@@ -14,6 +14,9 @@ import ComingSoon from './pages/ComingSoon';
 import Social from './pages/Social';
 import MainLayout from './components/MainLayout';
 import DynamicNavbar from './components/DynamicNavBar';
+import Buscador from './pages/Buscador';
+import Calificacion from './components/Calificacion';
+import VideoPlayer from './components/VideoPlayer';
 
 function App() {
   return (
@@ -33,6 +36,9 @@ function App() {
                 <Route path="/community" element={<Community />} />
                 <Route path="/social" element={<Social />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/search" element={<Buscador />} />
+                <Route path="/calificacion" element={<Calificacion />} />
+                <Route path="/video/:id" element={<VideoPlayer/>} />
               </Routes>
             </MainLayout>
           }/>

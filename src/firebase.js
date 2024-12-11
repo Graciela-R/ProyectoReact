@@ -3,12 +3,12 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import {  getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCo6JHxrOEQM5G7UII8FgmGNCAXEc4jR2Q",
-  authDomain: "movies-58f3b.firebaseapp.com",
-  projectId: "movies-58f3b",
-  storageBucket: "movies-58f3b.firebasestorage.app",
-  messagingSenderId: "384523549145",
-  appId: "1:384523549145:web:3657c034717b80806081c8"
+  apiKey: "AIzaSyCu8Mq8eV1QYfqhKH5YpJA6cYA_g9U4Euo",
+  authDomain: "demovideo-b6220.firebaseapp.com",
+  projectId: "demovideo-b6220",
+  storageBucket: "demovideo-b6220.firebasestorage.app",
+  messagingSenderId: "630978052756",
+  appId: "1:630978052756:web:4837507a131964fe852a81"
 };
 
 const app = initializeApp(firebaseConfig);

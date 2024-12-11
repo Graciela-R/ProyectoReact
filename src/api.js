@@ -35,3 +35,36 @@ export const fetchTrailerKey = async (movieId) => {
   const trailer = videos.find(video => video.type === 'Trailer' && video.site === 'YouTube');
   return trailer ? trailer.key : null;
 };
+
+export const getMovieUpcomming=async ()=>{
+  try{
+   const response=await  axios.get(`${BASE_URL}/movie/upcoming`,{
+     params:{
+       api_key:API,
+     }
+
+   });
+   return response.data.results
+
+  }catch(e){
+    console.log("error al obtener las peliculas de muy pronto",e)
+    return [];
+
+  }
+}
+
+export const getMovieBuscador=async(query)=>{
+  try{
+    const response=await axios.get(`${BASE_URL}/search/movie`,{
+      params:{
+        api_key:API,
+        query:query
+      }
+    })
+    return response.data.results
+
+  }catch(e){
+    console.log("error al obtener las peliculas en el buscador",e)
+    return [];
+  }
+}
